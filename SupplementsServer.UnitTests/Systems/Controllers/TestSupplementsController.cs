@@ -87,4 +87,42 @@ public class TestSupplementsController
         NotFoundResult resultObj = (NotFoundResult) result;
         resultObj.StatusCode.Should().Be(404);
     }
+    
+    [Fact]
+    public async Task? Find_OnNotFound_Return404() {
+        // Arrange
+        var mockSupplementService = new Mock<ISupplementService>();
+        mockSupplementService
+            .Setup(service => service.GetAllSupplements())
+            .ReturnsAsync(new List<Supplement>());
+        
+        SupplementsController supplementsController = new SupplementsController(mockSupplementService.Object);
+        
+        // Act
+        var result = (NotFoundResult)await supplementsController.GetFind("test");
+        
+        // Assert
+        result.Should().BeOfType<NotFoundResult>();
+        NotFoundResult resultObj = (NotFoundResult) result;
+        resultObj.StatusCode.Should().Be(404);
+    }
+    
+    [Fact]
+    public async Task? Find_OnFound_ReturnSupplement() {
+        // Arrange
+        var mockSupplementService = new Mock<ISupplementService>();
+        mockSupplementService
+            .Setup(service => service.GetAllSupplements())
+            .ReturnsAsync(SupplementsFixture.GetTestSupplements());
+        
+        SupplementsController supplementsController = new SupplementsController(mockSupplementService.Object);
+        
+        // Act
+        var result = (OkObjectResult)await supplementsController.GetFind("test");
+        
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        OkObjectResult resultObj = (OkObjectResult) result;
+        resultObj.StatusCode.Should().Be(200);
+    }
 }

@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using SupplementsServer.API.Models;
 using SupplementsServer.API.Services;
 
 namespace SupplementsServer.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("supplements")]
 public class SupplementsController : ControllerBase
 {
 
@@ -23,5 +24,21 @@ public class SupplementsController : ControllerBase
         }
 
         return NotFound();
+    }
+
+    [HttpGet("find/{name}", Name = "GetFindSupplements")]
+    public async Task<IActionResult> GetFind(string name) {
+        var supplements =  await _supplementService.GetAllSupplements();
+        try {
+            Supplement[] supplement = supplements.Where(s => s.Name.Contains(name)).ToArray();
+            if (supplement.Length == 0)
+                throw new Exception();
+            return Ok(supplement);
+        }
+        catch (Exception) {
+            return NotFound();
+        }
+        
+        
     }
 }
