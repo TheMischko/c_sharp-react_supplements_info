@@ -1,0 +1,8 @@
+﻿services:
+  server:
+    build: .
+    environment:
+      ASPNETCORE_HTTP_PORT: https://+:5001
+      ASPNETCORE_URLS: http://+:5000
+    ports:
+      - 5000:5000
