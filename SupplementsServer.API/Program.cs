@@ -27,7 +27,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-const string DATA_PATH = "../data.csv";
+const string DATA_PATH = "./data.csv";
 void ConfigureServices(IServiceCollection services) {
     services.AddTransient<ISupplementService>(serviceProvider => {
         return new SupplementService(DATA_PATH);
