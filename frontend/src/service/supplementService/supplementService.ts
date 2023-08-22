@@ -28,12 +28,30 @@ export const getUniqueCategories = (supplements:Supplement[]):string[] => {
             catCounts[cat]++;
         }
     }
-    console.log(catCounts);
     return categories;
 }
 
-export const getSupplementsCategories = (supplement:Supplement) => {
+export const getSupplementsCategories = (supplement:Supplement):string[] => {
     const pattern = "\\–|(,\W)";
     const regex = new RegExp(pattern);
     return supplement.category.split(regex);
+}
+
+export const findSupplements = async (searchString: string):Promise<Supplement[]> => {
+    if(searchString === ""){
+        return await getAllSupplements();
+    }
+
+    const url = getEndpointUrl(`/supplements/find/${searchString}`);
+    try{
+        const response = await fetch(url);
+        if(response.status === 404){
+            return [];
+        }
+        const data = await response.json();
+        return data
+    } catch (err){
+        console.error(err)
+    }
+    return [];
 }
