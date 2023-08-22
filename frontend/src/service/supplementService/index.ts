@@ -1,5 +1,7 @@
-import {getAllSupplements} from "./supplementService";
+import {getAllSupplements, getUniqueCategories, getSupplementsCategories} from "./supplementService";
 
 export default {
-    getAllSupplements
+    getAllSupplements,
+    getUniqueCategories,
+    getSupplementsCategories
 }
