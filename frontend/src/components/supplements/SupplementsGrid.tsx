@@ -1,11 +1,12 @@
-import {useEffect, useState} from "react";
-import {getAllSupplements} from "../../service/supplementService/supplementService";
+import {useEffect, useState, useContext} from "react";
+import {getAllSupplements, getUniqueCategories} from "../../service/supplementService/supplementService";
 import {Supplement} from "../../model/supplement";
 import {Grid, Stack} from "@chakra-ui/react";
 import SupplementCard from "./SupplementCard";
+import { SupplementContext } from "../../providers/SupplementsContext";
 
 export default function SupplementsGrid(){
-    const [supplements, setSupplements] = useState<Supplement[]>([]);
+    const {value: supplements, setValue: setSupplements} = useContext(SupplementContext);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -14,7 +15,9 @@ export default function SupplementsGrid(){
 
     const fetchData = async() => {
         const supplements = await getAllSupplements();
-        setSupplements(supplements)
+        setSupplements(supplements);
+        const cats = getUniqueCategories(supplements);
+        console.log(cats);
         setLoading(false);
     }
 
